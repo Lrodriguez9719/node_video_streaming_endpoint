@@ -1,0 +1,28 @@
+{
+  "name": "video_streaming_node_endpoint",
+  "version": "1.0.0",
+  "description": "Video streaming endpoint made in with NodeJS",
+  "keywords": [
+    "nodejs",
+    "video",
+    "streaming"
+  ],
+  "homepage": "https://github.com/Lrodriguez9719/node_video_streaming_endpoint#readme",
+  "bugs": {
+    "url": "https://github.com/Lrodriguez9719/node_video_streaming_endpoint/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lrodriguez9719/node_video_streaming_endpoint.git"
+  },
+  "license": "ISC",
+  "author": "Luis Rodriguez",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
