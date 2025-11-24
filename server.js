@@ -5,6 +5,10 @@ const path = require('path');
 const app = express();
 const PORT = 3000;
 
+// Define paths constants
+const VIDEO_DIR = path.join(__dirname, 'media', 'videos');
+const DB_PATH = path.join(__dirname, 'videos.json');
+
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Range");
@@ -15,29 +19,32 @@ app.get('/', (req, res) => {
   res.send('Video Server Running');
 });
 
-// 1. Endpoint to list all available video files
+// 1. Endpoint to list videos with metadata
 app.get('/videos', (req, res) => {
-    fs.readdir(__dirname, (err, files) => {
+    fs.readFile(DB_PATH, 'utf8', (err, data) => {
         if (err) {
-            return res.status(500).json({ error: 'Unable to scan directory' });
+            console.error(err);
+            return res.status(500).json({ error: 'Could not read video database' });
         }
-        // Filter only mp4 files
-        const videos = files.filter(file => path.extname(file) === '.mp4');
-        res.json(videos);
+        try {
+            const videos = JSON.parse(data);
+            res.json(videos);
+        } catch (parseError) {
+            res.status(500).json({ error: 'Database format error' });
+        }
     });
 });
 
-// 2. Dynamic endpoint that accepts a filename
+// 2. Dynamic endpoint to stream video
 app.get('/video/:filename', (req, res) => {
   const fileName = req.params.filename;
-  const videoPath = path.join(__dirname, fileName);
+  const videoPath = path.join(VIDEO_DIR, fileName);
   
-  // Security: Prevent directory traversal attacks (e.g. ../../etc/passwd)
+  // Security check
   if (fileName.includes('..') || fileName.includes('/')) {
       return res.status(403).send('Forbidden');
   }
 
-  // Check if file exists
   if (!fs.existsSync(videoPath)) {
       return res.status(404).send('Video file not found');
   }

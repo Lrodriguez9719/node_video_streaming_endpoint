@@ -1,0 +1,50 @@
+[
+    {
+        "filename": "biking.mp4",
+        "title": "Biking",
+        "artist": "Frank Ocean ft. Jay Z & Tyler, The Creator",
+        "description": "Song Edit/Mashup"
+    },
+    {
+        "filename": "cleaning-out-the-rooms.mp4",
+        "title": "Cleaning Out The Rooms",
+        "artist": "Sea Power",
+        "description": "Disco Elysium Montage"
+    },
+    {
+        "filename": "moby-dick.mp4",
+        "title": "Moby Dick",
+        "artist": "Jakey",
+        "description": "Official Music Video"
+    },
+    {
+        "filename": "ordinary-creature.mp4",
+        "title": "Ordinary Creature",
+        "artist": "Of Monsters and Men",
+        "description": "Official Music Video"
+    },
+    {
+        "filename": "stand-by-me.mp4",
+        "title": "Stand By Me",
+        "artist": "Florence + The Machine",
+        "description": "Official Visualizer"
+    },
+    {
+        "filename": "that-funny-feeling.mp4",
+        "title": "That Funny Feeling",
+        "artist": "Phoebe Bridgers",
+        "description": "Cover Song"
+    },
+    {
+        "filename": "the-highs-&-the-lows.mp4",
+        "title": "The Highs & The Lows",
+        "artist": "Chance the Rapper ft. Joey Bada$$r",
+        "description": "Official Music Video"
+    },
+    {
+        "filename": "toco-y-me-voy.mp4",
+        "title": "Toco y Me Voy",
+        "artist": "Nahuel Pennisi",
+        "description": "Official Music Video"
+    }
+]
