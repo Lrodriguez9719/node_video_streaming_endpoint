@@ -5,8 +5,6 @@ const path = require('path');
 const app = express();
 const PORT = 3000;
 
-// Middleware to allow CORS (Cross-Origin Resource Sharing)
-// This allows your personal-site to request resources from this server
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Range");
@@ -14,22 +12,31 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-  res.send(`
-    <!DOCTYPE html>
-    <html>
-      <head><title>Video Streaming w/ Node</title></head>
-      <body>
-        <h1>Video Streaming Test</h1>
-        <p>Go to /video to stream</p>
-      </body>
-    </html>
-  `);
+  res.send('Video Server Running');
 });
 
-app.get('/video', (req, res) => {
-  // Ensure you have a file named 'video.mp4' in this directory
-  const videoPath = path.join(__dirname, 'toco-y-me-voy.mp4');
+// 1. Endpoint to list all available video files
+app.get('/videos', (req, res) => {
+    fs.readdir(__dirname, (err, files) => {
+        if (err) {
+            return res.status(500).json({ error: 'Unable to scan directory' });
+        }
+        // Filter only mp4 files
+        const videos = files.filter(file => path.extname(file) === '.mp4');
+        res.json(videos);
+    });
+});
+
+// 2. Dynamic endpoint that accepts a filename
+app.get('/video/:filename', (req, res) => {
+  const fileName = req.params.filename;
+  const videoPath = path.join(__dirname, fileName);
   
+  // Security: Prevent directory traversal attacks (e.g. ../../etc/passwd)
+  if (fileName.includes('..') || fileName.includes('/')) {
+      return res.status(403).send('Forbidden');
+  }
+
   // Check if file exists
   if (!fs.existsSync(videoPath)) {
       return res.status(404).send('Video file not found');
@@ -40,8 +47,6 @@ app.get('/video', (req, res) => {
   const videoRange = req.headers.range;
 
   if (videoRange) {
-    // Parse Range
-    // Example: "bytes=32324-"
     const parts = videoRange.replace(/bytes=/, "").split("-");
     const start = parseInt(parts[0], 10);
     const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
